@@ -1,0 +1,40 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Environment variables (DO NOT commit sensitive data)
+.env
+.env.local
+.env.*.local
+
+# Test files (if you add tests later)
+test-results/
+coverage/
+*.test.result
+
+# Build outputs (if you add build scripts later)
+dist/
+build/
