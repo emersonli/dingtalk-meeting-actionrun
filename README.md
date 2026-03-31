@@ -1,12 +1,12 @@
-# DingTalk Action Items
+# DingTalk Meeting ActionRun
 
-[![Version](https://img.shields.io/badge/version-0.1.0-blue)](https://github.com/emersonli/dingtalk-action-items/releases)
+[![Version](https://img.shields.io/badge/version-0.1.0-blue)](https://github.com/emersonli/dingtalk-meeting-actionrun/releases)
 [![DingTalk CLI](https://img.shields.io/badge/dws-v1.0.5+-green)](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue)](LICENSE)
 
-**Turn meeting discussions into actionable tasks and get things done automatically.**
+**Automatically extract and execute action items from your meetings.**
 
-An intelligent agent skill for DingTalk Workspace CLI that extracts action items from meeting notes and executes them on your behalf.
+An intelligent agent skill for DingTalk Workspace CLI that transforms meeting discussions into executable tasks and gets things done on your behalf.
 
 ---
 
@@ -40,19 +40,19 @@ irm https://raw.githubusercontent.com/DingTalk-Real-AI/dingtalk-workspace-cli/ma
 
 2. **Setup & Authentication**
 
-Follow the [Chinese quick start guide](README_CN.md#快速入门) for detailed setup instructions in Chinese.
+Follow the [Chinese quick start guide](docs/USAGE.md) for detailed setup instructions in Chinese.
 
 ### Installation
 
 ```bash
 # Clone this repository
-git clone https://github.com/emersonli/dingtalk-action-items.git
-cd dingtalk-action-items
+git clone https://github.com/emersonli/dingtalk-meeting-actionrun.git
+cd dingtalk-meeting-actionrun
 
 # Or download the skill file directly
-mkdir -p ~/.agents/skills/dingtalk-action-items
-curl -fsSL https://raw.githubusercontent.com/emersonli/dingtalk-action-items/main/action-items.md \
-  -o ~/.agents/skills/dingtalk-action-items/action-items.md
+mkdir -p ~/.agents/skills/dingtalk-meeting-actionrun
+curl -fsSL https://raw.githubusercontent.com/emersonli/dingtalk-meeting-actionrun/main/action-items.md \
+  -o ~/.agents/skills/dingtalk-meeting-actionrun/action-items.md
 ```
 
 ### Usage
@@ -152,7 +152,7 @@ export DWS_CLIENT_SECRET=<your-app-secret>
 
 ## 📖 Documentation
 
-- **[中文文档](README_CN.md)** - Complete Chinese documentation
+- **[中文文档](docs/USAGE.md)** - Complete Chinese documentation
 - **[Quick Start Guide](docs/QUICKSTART.md)** - 5-minute setup guide
 - **[Examples](examples/)** - Sample inputs and outputs
 
@@ -191,8 +191,8 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ### Development Setup
 
 ```bash
-git clone https://github.com/emersonli/dingtalk-action-items.git
-cd dingtalk-action-items
+git clone https://github.com/emersonli/dingtalk-meeting-actionrun.git
+cd dingtalk-meeting-actionrun
 
 # Make sure you have DingTalk CLI installed and configured
 dws --version
@@ -216,9 +216,9 @@ Apache License 2.0 - see [LICENSE](LICENSE) for details.
 
 ## 📬 Support
 
-- **Issues**: https://github.com/emersonli/dingtalk-action-items/issues
-- **Discussions**: https://github.com/emersonli/dingtalk-action-items/discussions
-- **DingTalk DWS Group**: Scan QR code in [Chinese docs](README_CN.md)
+- **Issues**: https://github.com/emersonli/dingtalk-meeting-actionrun/issues
+- **Discussions**: https://github.com/emersonli/dingtalk-meeting-actionrun/discussions
+- **DingTalk DWS Group**: Scan QR code in [Chinese docs](docs/USAGE.md)
 
 ---
 
