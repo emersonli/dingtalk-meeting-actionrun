@@ -18,7 +18,9 @@ if [ -z "$TOKEN" ]; then
     exit 1
 fi
 
-cd /Users/lihao/.qoderwork/workspace/mndz13sr1had0vr1/dingtalk-minutes-tasks
+# 获取脚本所在目录（项目根目录）
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cd "$SCRIPT_DIR"
 
 # 设置远程仓库（使用 token 的 HTTPS URL）
 git remote set-url origin https://${TOKEN}@github.com/emersonli/dingtalk-meeting-actionrun.git
@@ -36,7 +38,7 @@ if [ $? -eq 0 ]; then
     echo "下一步："
     echo "  1. 访问仓库查看代码"
     echo "  2. 添加仓库描述和 Topics"
-    echo "  3. 创建第一个 Release (v0.1.0)"
+    echo "  3. 创建第一个 Release (v1.0.0)"
 else
     echo ""
     echo "❌ 推送失败，请检查："

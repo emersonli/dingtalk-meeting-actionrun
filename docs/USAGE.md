@@ -2,7 +2,7 @@
 
 **将会议讨论转化为可执行任务，自动帮你完成**
 
-基于钉钉 Workspace CLI 的智能助手技能
+基于钉钉 Workspace CLI (dws) 的智能助手技能
 
 ---
 
@@ -10,11 +10,12 @@
 
 不只是列出待办清单，而是**直接执行**：
 
-- "把这个发给团队" → 起草并发送消息
+- "把这个发给团队" → 起草并通过 `dws chat` 发送消息
 - "约个时间 follow up" → 查询空闲时间并创建日程
 - "试用下这个新产品" → 查找链接和安装说明
 - "把这个任务安排给 XX" → 创建并分配待办
-- "看一下这个文档" → 获取、阅读并总结
+- "看一下这个文档" → 通过 `dws doc` 获取、阅读并总结
+- "获取会议听记" → 通过 `dws minutes` 自动提取会议录音转写
 
 **所有操作都需要你的确认才会执行。**
 
@@ -22,7 +23,7 @@
 
 ## ⚡ 快速开始
 
-### 1. 安装钉钉 CLI (v1.0.5+)
+### 1. 安装钉钉 CLI (v0.2.14+)
 
 ```bash
 # macOS / Linux
@@ -71,7 +72,7 @@ dws --version
 ### 4. 登录认证
 
 ```bash
-dws auth login --client-id <your-app-key> --client-secret <your-app-secret>
+dws auth login
 ```
 
 浏览器会弹出授权页面，完成授权即可。
@@ -98,11 +99,52 @@ curl -fsSL https://raw.githubusercontent.com/emersonli/dingtalk-meeting-actionru
 
 ## 💡 使用方式
 
-### V0.1 版本（手动输入模式）
+### V1.0 版本（自动化模式）
 
-由于钉钉 CLI 的 `minutes` 产品尚未发布，V0.1 采用手动输入方式：
+V1.0 支持自动获取钉钉闪记，无需手动粘贴会议记录。
 
-#### 步骤 1: 准备会议内容
+#### 方式 1：自动获取会议听记（推荐）
+
+**步骤 1: 提供钉钉闪记 URL**
+
+从钉钉客户端复制会议听记链接，例如：
+```
+https://shanji.dingtalk.com/minutes/abc-123-def-456
+```
+
+**步骤 2: 在 AI Agent 中触发**
+
+在你的 AI Agent（Claude Code、Cursor 等）中输入：
+
+```
+帮我处理这个会议听记：
+https://shanji.dingtalk.com/minutes/abc-123-def-456
+```
+
+或者直接说：
+```
+分析我今天的会议听记，提取待办并执行
+```
+
+**步骤 3: 自动获取与分析**
+
+Agent 会自动执行：
+```bash
+# 从 URL 提取 taskUuid
+# 获取听记摘要
+dws minutes summary --task-uuid <uuid> --format json
+
+# 获取完整转写文本
+dws minutes transcript --task-uuid <uuid> --format json
+```
+
+然后分析内容，提取行动项。
+
+#### 方式 2：手动输入会议记录（Fallback）
+
+如果会议未生成闪记或无法自动获取，可以手动粘贴文本。
+
+**步骤 1: 准备会议内容**
 
 复制你的会议记录/笔记，例如：
 
@@ -115,9 +157,7 @@ curl -fsSL https://raw.githubusercontent.com/emersonli/dingtalk-meeting-actionru
 赵六：Q2 的季度汇报需要在 4 月 15 日前完成
 ```
 
-#### 步骤 2: 在 AI Agent 中触发
-
-在你的 AI Agent（Claude Code、Cursor 等）中输入：
+**步骤 2: 在 AI Agent 中触发**
 
 ```
 /action-items
@@ -125,12 +165,6 @@ curl -fsSL https://raw.githubusercontent.com/emersonli/dingtalk-meeting-actionru
 帮我处理这个会议记录：
 
 [粘贴上面的会议内容]
-```
-
-或者直接描述：
-
-```
-帮我分析这个会议记录，提取待办并执行
 ```
 
 #### 步骤 3: 确认并执行
@@ -150,7 +184,7 @@ Agent 会分析会议内容，提取所有行动项，展示为编号列表：
 
 【2】发送需求文档给技术部
     背景：王五提醒发送文档
-    计划：起草消息 → 复制到剪贴板
+    计划：起草消息 → 通过 dws chat 发送
     
 【3】完成 Q2 季度汇报
     背景：赵六提到 4 月 15 日截止
@@ -173,6 +207,7 @@ do 1 3      # 执行第 1 和 3 项
 
 ```
 ✅ 已完成：
+
 【1】约产品团队 review 会议
 - 已创建日程：2026-04-08 14:00-15:00
 - 参与者：张三、李四、王五等 5 人
@@ -215,28 +250,27 @@ do 1 3      # 执行第 1 和 3 项
 
 ## 📋 功能清单
 
-### V0.1 支持 ✅
+### V1.0 支持 ✅
 
 | 功能 | 状态 | 说明 |
 |------|------|------|
-| 手动输入 | ✅ | 粘贴会议记录 |
+| 自动获取钉钉闪记 | ✅ | `dws minutes list/summary/transcript` |
+| 自动读取钉钉文档 | ✅ | `dws doc read` |
+| 钉盘文件访问 | ✅ | `dws drive download` |
 | Wake Word 识别 | ✅ | 扫描专属指令 |
 | 行动项提取 | ✅ | 明确 + 隐含待办 |
-| 发送消息 | ✅ | 起草 + 复制到剪贴板 |
+| 发送消息 | ✅ | 通过 `dws chat message send` 真正发送 |
 | 创建日程 | ✅ | 查闲忙 + 创建事件 + 预定会议室 |
 | 创建待办 | ✅ | 分配任务 |
 | 搜索联系人 | ✅ | 按姓名/部门查找 |
 | 信息调研 | ✅ | WebSearch/WebFetch |
 
-### V1.0 规划 🔴
+### V2.0 规划 🔮
 
-等待钉钉 CLI 发布对应产品：
-
-- 🔴 自动获取钉钉闪记 (`dws minutes`) - 预计 Q2 2026
-- 🔴 自动读取钉钉文档 (`dws doc`) - 预计 Q2 2026
-- 🔴 钉盘文件访问 (`dws drive`) - 预计 Q2 2026
-
-**V0.1 变通方案**：手动复制会议记录到对话中，Agent 进行分析并执行。
+- 多语言支持（英文、日文等）
+- 智能行动识别优化（基于历史数据学习）
+- 跨会议任务关联与追踪
+- 自动生成会议纪要文档
 
 ---
 
@@ -246,16 +280,21 @@ do 1 3      # 执行第 1 和 3 项
 
 **A**: 先完成登录认证：
 ```bash
-dws auth login --client-id <your-app-key> --client-secret <your-app-secret>
+dws auth login
 ```
 
 ### Q: 提示"权限不足"？
 
 **A**: 需要企业管理员授权。请联系管理员加入钉钉 DWS 共创群完成白名单配置。
 
-### Q: 为什么不能自动获取钉钉闪记？
+### Q: 为什么无法获取会议听记？
 
-**A**: 钉钉 CLI 的 `minutes` 产品尚未发布（Coming soon）。V0.1 采用手动输入方式，V1.0 将支持自动获取。
+**A**: 可能原因：
+1. 会议未开启录音功能
+2. 听记尚未生成完成（通常需要几分钟）
+3. URL 或 UUID 不正确
+
+**变通方案**：手动复制会议记录到对话中，Agent 进行分析并执行。
 
 ### Q: Wake Word 不工作？
 
@@ -318,4 +357,4 @@ dws --version
 
 **Made with ❤️ for the DingTalk community**
 
-最后更新：2026-03-31
+最后更新：2026-04-16

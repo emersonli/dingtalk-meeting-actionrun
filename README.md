@@ -1,7 +1,7 @@
 # DingTalk Meeting ActionRun
 
-[![Version](https://img.shields.io/badge/version-0.1.0-blue)](https://github.com/emersonli/dingtalk-meeting-actionrun/releases)
-[![DingTalk CLI](https://img.shields.io/badge/dws-v1.0.5+-green)](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli)
+[![Version](https://img.shields.io/badge/version-1.0.0-blue)](https://github.com/emersonli/dingtalk-meeting-actionrun/releases)
+[![DingTalk CLI](https://img.shields.io/badge/dws-v0.2.14+-green)](https://github.com/DingTalk-Real-AI/dingtalk-workspace-cli)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue)](LICENSE)
 
 **Automatically extract and execute action items from your meetings.**
@@ -14,11 +14,12 @@ An intelligent agent skill for DingTalk Workspace CLI that transforms meeting di
 
 Instead of just listing TODOs, this skill actually **executes** them for you:
 
-- "Send this to the team" → Drafts and sends the message
-- "Schedule a follow-up" → Finds available time slots and creates the event  
+- "Send this to the team" → Drafts and sends the message via `dws chat`
+- "Schedule a follow-up" → Finds available time slots and creates the event
 - "Try this new tool" → Researches and shares installation instructions
 - "Assign this task to XX" → Creates and assigns the TODO item
-- "Review this document" → Fetches, reads, and summarizes
+- "Review this document" → Fetches, reads, and summarizes via `dws doc`
+- "Get meeting notes" → Auto-fetches DingTalk Minutes via `dws minutes`
 
 **All actions require your confirmation before execution.**
 
@@ -28,7 +29,7 @@ Instead of just listing TODOs, this skill actually **executes** them for you:
 
 ### Prerequisites
 
-1. **Install DingTalk CLI** (v1.0.5+)
+1. **Install DingTalk CLI** (v0.2.14+)
 
 ```bash
 # macOS / Linux
@@ -38,7 +39,16 @@ curl -fsSL https://raw.githubusercontent.com/DingTalk-Real-AI/dingtalk-workspace
 irm https://raw.githubusercontent.com/DingTalk-Real-AI/dingtalk-workspace-cli/main/scripts/install.ps1 | iex
 ```
 
+Verify installation:
+```bash
+dws --version
+```
+
 2. **Setup & Authentication**
+
+```bash
+dws auth login
+```
 
 Follow the [Chinese quick start guide](docs/USAGE.md) for detailed setup instructions in Chinese.
 
@@ -57,11 +67,26 @@ curl -fsSL https://raw.githubusercontent.com/emersonli/dingtalk-meeting-actionru
 
 ### Usage
 
-**V0.1 Mode (Manual Input)**
+**V1.0 Mode (Automated)**
 
-Since DingTalk CLI's `minutes` product is not yet available, V0.1 uses manual input:
+The skill now supports automatic fetching of DingTalk Minutes:
 
-1. **Provide Meeting Content** - Copy and paste your meeting notes into the conversation
+1. **Provide Meeting Content**
+
+   Option A: Provide DingTalk Minutes URL (Recommended)
+   ```
+   Help me process this meeting minutes:
+   https://shanji.dingtalk.com/minutes/xxx-xxx-xxx
+   ```
+
+   Option B: Manual input (Fallback)
+   ```
+   Help me process this meeting record:
+   
+   Zhang: We need to review the Q2 roadmap next week
+   Li: How about Tuesday or Wednesday afternoon?
+   Me: Help me schedule a meeting with the product team
+   ```
 
 2. **Trigger the Skill**
 
@@ -78,26 +103,29 @@ Since DingTalk CLI's `minutes` product is not yet available, V0.1 uses manual in
 
 ## 📋 Features
 
-### Available in V0.1 ✅
+### Available in V1.0 ✅
 
 | Feature | Status | Description |
 |---------|--------|-------------|
-| Manual Input | ✅ | Paste meeting notes manually |
+| Auto-fetch DingTalk Minutes | ✅ | `dws minutes list/summary/transcript` |
+| Auto-read DingTalk Docs | ✅ | `dws doc read` |
+| DingTalk Drive Access | ✅ | `dws drive download` |
 | Wake Word Detection | ✅ | Scan for personal commands |
 | Action Item Extraction | ✅ | Extract explicit & implicit tasks |
-| Send Messages | ✅ | Draft & copy to clipboard |
+| Send Messages | ✅ | Send via `dws chat message send` |
 | Schedule Meetings | ✅ | Check availability & create events |
 | Create Tasks | ✅ | Assign TODOs to executors |
 | Search Contacts | ✅ | Find users by name/department |
 | Web Research | ✅ | WebSearch/WebFetch integration |
 
-### Planned for V1.0 🔴
+### Planned for V2.0 🔮
 
-| Feature | Dependency | ETA |
-|---------|------------|-----|
-| Auto-fetch DingTalk Minutes | `dws minutes` | Q2 2026 |
-| Auto-read DingTalk Docs | `dws doc` | Q2 2026 |
-| DingTalk Drive Access | `dws drive` | Q2 2026 |
+| Feature | Description |
+|---------|-------------|
+| Multi-language Support | English, Japanese, etc. |
+| Smart Action Recognition | Learn from historical data |
+| Cross-meeting Task Tracking | Link related tasks across meetings |
+| Auto-generate Meeting Summary | Create summary documents automatically |
 
 ---
 
@@ -106,28 +134,41 @@ Since DingTalk CLI's `minutes` product is not yet available, V0.1 uses manual in
 ### Input
 
 ```
-Product Review Meeting Notes:
-
-Zhang: We need to review the Q2 roadmap with the product team next week
-Li: How about Tuesday or Wednesday afternoon?
-Me: Help me schedule a meeting with the product team next week
+Help me process this meeting minutes:
+https://shanji.dingtalk.com/minutes/abc-123-def
 ```
 
 ### Output
 
 ```markdown
-📋 Action Items (1 total)
+📋 Action Items (3 total)
 
 ### 🔴 Direct Commands (Wake Word Triggered)
 
-1. Schedule product team review meeting
-   Context: Zhang mentioned Q2 roadmap review, Li suggested Tue/Wed afternoon
-   Plan:
-   - Check availability across teams
-   - Recommend 3 time slots
-   - Create calendar event & book meeting room
-   
-   Execute now? Reply "1" or "do 1"
+【1】Schedule product team review meeting
+    Context: Zhang mentioned Q2 roadmap review, Li suggested Tue/Wed afternoon
+    Plan:
+    - Check availability across teams
+    - Recommend 3 time slots
+    - Create calendar event & book meeting room
+    
+    Execute now? Reply "1" or "do 1"
+
+### 🟡 Explicit Tasks
+
+【2】Send requirements document to tech team
+    Context: Wang reminded to send the document
+    Plan: Draft message → Send via dws chat
+    
+    Execute now? Reply "2" or "do 2"
+
+### 🔵 Implicit Tasks
+
+【3】Track test plan progress
+    Context: Zhao said complete by April 15
+    Plan: Create TODO task → Set deadline
+    
+    Execute now? Reply "3" or "do 3"
 ```
 
 ---
@@ -138,7 +179,7 @@ Me: Help me schedule a meeting with the product team next week
 
 On first use, the skill will guide you through:
 
-1. **User Identity** - Automatically fetches your DingTalk profile
+1. **User Identity** - Automatically fetches your DingTalk profile via `dws contact user get-self`
 2. **Wake Word** - Set your personal trigger word (e.g., "帮我", "Hey assistant")
 
 ### Environment Variables
@@ -160,17 +201,18 @@ export DWS_CLIENT_SECRET=<your-app-secret>
 
 ## 🗺️ Roadmap
 
-### V0.1 (Current) - Q1 2026
-- ✅ Manual input mode
-- ✅ Wake word detection
-- ✅ Basic action extraction
-- ✅ Core execution capabilities
+### V1.0 (Current) - Q2 2026
+- ✅ Automatic DingTalk Minutes integration
+- ✅ Automatic DingTalk Docs integration
+- ✅ DingTalk Drive access
+- ✅ Real message sending (not just clipboard)
+- ✅ Comprehensive error handling
 
-### V1.0 (Planned) - Q2 2026
-- 🔲 Automatic DingTalk Minutes integration
-- 🔲 Automatic DingTalk Docs integration
-- 🔲 Smart action recognition improvements
+### V2.0 (Planned) - Q3 2026
 - 🔲 Multi-language support
+- 🔲 Smart action recognition improvements
+- 🔲 Cross-meeting task tracking
+- 🔲 Auto-generate meeting summary documents
 
 ---
 

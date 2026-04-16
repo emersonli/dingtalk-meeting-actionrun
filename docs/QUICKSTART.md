@@ -1,6 +1,6 @@
 # 快速入门指南
 
-5 分钟快速开始使用 DingTalk Minutes Tasks。
+5 分钟快速开始使用 DingTalk Meeting ActionRun。
 
 ---
 
@@ -25,8 +25,9 @@ dws --version
 ```
 
 应该看到类似输出：
+
 ```
-dws version v1.0.5
+dws version v0.2.14
 ```
 
 ---
@@ -73,7 +74,6 @@ dws version v1.0.5
 ### 加入钉钉 DWS 共创群
 
 1. 扫码加入钉钉 DWS 共创群：
-   
    ![DingTalk Group QR Code](https://img.alicdn.com/imgextra/i4/O1CN01Rijgk81gKqVSKMzdx_!!6000000004124-2-tps-654-644.png)
 
 2. 在群内提供：
@@ -87,7 +87,7 @@ dws version v1.0.5
 ## 第四步：登录认证 (1 分钟)
 
 ```bash
-dws auth login --client-id <your-app-key> --client-secret <your-app-secret>
+dws auth login
 ```
 
 系统会弹出浏览器让你授权。完成授权后，命令行会显示：
@@ -112,16 +112,16 @@ dws contact user get-self
 ### 方式 1: 克隆仓库（推荐）
 
 ```bash
-git clone https://github.com/yourusername/dingtalk-minutes-tasks.git
-cd dingtalk-minutes-tasks
+git clone https://github.com/emersonli/dingtalk-meeting-actionrun.git
+cd dingtalk-meeting-actionrun
 ```
 
 ### 方式 2: 直接下载
 
 ```bash
-mkdir -p ~/.agents/skills/dingtalk-minutes-tasks
-curl -fsSL https://raw.githubusercontent.com/yourusername/dingtalk-minutes-tasks/main/SKILL.md \
-  -o ~/.agents/skills/dingtalk-minutes-tasks/SKILL.md
+mkdir -p ~/.agents/skills/dingtalk-meeting-actionrun
+curl -fsSL https://raw.githubusercontent.com/emersonli/dingtalk-meeting-actionrun/main/action-items.md \
+  -o ~/.agents/skills/dingtalk-meeting-actionrun/action-items.md
 ```
 
 ---
@@ -136,7 +136,17 @@ curl -fsSL https://raw.githubusercontent.com/yourusername/dingtalk-minutes-tasks
 
 3. **提供会议内容**
 
-   直接粘贴会议记录，例如：
+   **方式 A：自动获取听记（推荐）**
+   
+   直接粘贴钉钉闪记 URL：
+   ```
+   帮我处理这个会议听记：
+   https://shanji.dingtalk.com/minutes/xxx-xxx-xxx
+   ```
+
+   **方式 B：手动输入（Fallback）**
+   
+   粘贴会议记录：
    ```
    帮我分析这个会议记录：
    
@@ -149,9 +159,9 @@ curl -fsSL https://raw.githubusercontent.com/yourusername/dingtalk-minutes-tasks
 
    输入：
    ```
-   /dingtalk-minutes
+   /action-items
    ```
-
+   
    或者直接描述：
    ```
    帮我提取待办并执行
@@ -168,13 +178,13 @@ curl -fsSL https://raw.githubusercontent.com/yourusername/dingtalk-minutes-tasks
 
 ## 🎉 完成！
 
-现在你已经成功配置好 DingTalk Minutes Tasks！
+现在你已经成功配置好 DingTalk Meeting ActionRun！
 
 ### 下一步
 
 - 📖 查看 [完整文档](../README.md) 了解更多功能
-- 📝 尝试 [示例](./examples/example-meeting-notes.txt) 体验完整流程
-- 🗺️ 了解 [路线图](../README.md#路线图) 知道未来会有什么新功能
+- 📝 尝试 [示例](../examples/example-meeting-notes.txt) 体验完整流程
+- 🗺️ 了解 [路线图](../README.md#🗺️-roadmap) 知道未来会有什么新功能
 
 ---
 
@@ -187,12 +197,13 @@ curl -fsSL https://raw.githubusercontent.com/yourusername/dingtalk-minutes-tasks
 | 提示"未登录" | 运行 `dws auth login` 重新登录 |
 | 提示"权限不足" | 联系企业管理员加入白名单 |
 | 找不到命令 | 检查 CLI 是否安装到 PATH |
-| Skill 不工作 | 确认 SKILL.md 路径正确 |
+| Skill 不工作 | 确认 action-items.md 路径正确 |
+| 无法获取听记 | 检查 URL 是否正确，或改用手动输入模式 |
 
 ### 获取帮助
 
 - 📖 [完整文档](../README.md)
-- 🐛 [提交 Issue](https://github.com/yourusername/dingtalk-minutes-tasks/issues)
+- 🐛 [提交 Issue](https://github.com/emersonli/dingtalk-meeting-actionrun/issues)
 - 💬 [钉钉 DWS 共创群](https://qr.dingtalk.com/action/joingroup?code=v1,k1,v9/YMJG9qXhvFk5juktYnQziN70rF7QHebC/JLztTVRuRVJIwrSsXmL8oFqU5ajJ&_dt_no_comment=1&origin=11)
 
 ---

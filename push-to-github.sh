@@ -34,7 +34,6 @@ else
     echo ""
     echo "❌ Push failed. Please try manually:"
     echo ""
-    echo "   cd /Users/lihao/.qoderwork/workspace/mndz13sr1had0vr1/dingtalk-minutes-tasks"
     echo "   git push -u origin main --force"
     echo ""
     echo "Or use GitHub CLI:"
